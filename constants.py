@@ -25,6 +25,14 @@ LINK_SOURCE_ICON = ":material/link: "
 WARNING_ICON = ":material/warning:"
 ERROR_ICON = ":material/error:"
 SPINNER_TEXT = "回答生成中..."
+SIDEBAR_TITLE = "利用目的"
+INITIAL_ASSISTANT_MESSAGE = "こんにちは。私は社内文書の情報をもとに回答する生成AIチャットボットです。サイドバーの利用目的を選択し、画面下部のチャット欄からメッセージを送信してください。"
+INITIAL_WARNING_MESSAGE = "回答に利用する情報は、参照できた文書の検索結果に依存します。"
+DOC_SEARCH_DESCRIPTION = "入力内容と関連性が高い社内文書のありかを検索できます。"
+DOC_SEARCH_EXAMPLE = "【入力例】\n社員の育成方針に関するMTGの議事録"
+INQUIRY_DESCRIPTION = "質問・要望に対して、社内文書の情報をもとに回答を得られます。"
+INQUIRY_EXAMPLE = "【入力例】\n人事部に所属している従業員情報を一覧化して"
+PAGE_NUMBER_PREFIX = "ページNo."
 
 
 # ==========================================
@@ -44,17 +52,28 @@ TEMPERATURE = 0.5
 
 
 # ==========================================
+# RAG設定系
+# ==========================================
+RAG_RETRIEVER_K = 5
+RAG_CHUNK_SIZE = 500
+RAG_CHUNK_OVERLAP = 50
+
+
+# ==========================================
 # RAG参照用のデータソース系
 # ==========================================
 RAG_TOP_FOLDER_PATH = "./data"
 SUPPORTED_EXTENSIONS = {
     ".pdf": PyMuPDFLoader,
     ".docx": Docx2txtLoader,
-    ".csv": lambda path: CSVLoader(path, encoding="utf-8")
+    ".csv": lambda path: CSVLoader(path, encoding="utf-8"),
+    ".txt": lambda path: TextLoader(path, encoding="utf-8")
 }
 WEB_URL_LOAD_TARGETS = [
     "https://generative-ai.web-camp.io/"
 ]
+CSV_DEPARTMENT_KEYS = ["所属部署", "部署", "部門", "所属", "部署名", "部門名"]
+CSV_NAME_KEYS = ["氏名", "名前", "社員名", "従業員名"]
 
 
 # ==========================================
@@ -67,7 +86,7 @@ SYSTEM_PROMPT_DOC_SEARCH = """
     以下の条件に基づき、ユーザー入力に対して回答してください。
 
     【条件】
-    1. ユーザー入力内容と以下の文脈との間に関連性がある場合、空文字「""」を返してください。
+    1. ユーザー入力内容と以下の文脈との間に関連性がある場合、空文字「\"\"」を返してください。
     2. ユーザー入力内容と以下の文脈との関連性が明らかに低い場合、「該当資料なし」と回答してください。
 
     【文脈】
