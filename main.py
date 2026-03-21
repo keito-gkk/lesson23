@@ -26,12 +26,13 @@ import constants as ct
 ############################################################
 # ブラウザタブの表示文言を設定
 st.set_page_config(
-    page_title=ct.APP_NAME
+    page_title=ct.APP_NAME,
+    layout="wide"
 )
 
 # ログ出力を行うためのロガーの設定
 logger = logging.getLogger(ct.LOGGER_NAME)
-
+    
 
 ############################################################
 # 3. 初期化処理
